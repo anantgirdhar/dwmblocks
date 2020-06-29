@@ -1,7 +1,9 @@
 PREFIX ?= /usr/local
 
-output: dwmblocks.c blocks.h
-	cc `pkg-config --cflags x11` `pkg-config --libs x11` dwmblocks.c -o dwmblocks
+dwmblocks.o: dwmblocks.c blocks.h
+	gcc -c -lX11 dwmblocks.c
+output: dwmblocks.o
+	gcc dwmblocks.o -lX11 -o dwmblocks
 clean:
 	rm -f *.o *.gch dwmblocks
 install: output
@@ -10,3 +12,5 @@ install: output
 	chmod 755 $(DESTDIR)$(PREFIX)/bin/dwmblocks
 uninstall:
 	rm -f $(DESTDIR)$(PREFIX)/bin/dwmblocks
+
+.PHONY: clean install uninstall
